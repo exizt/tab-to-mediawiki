@@ -7,43 +7,58 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <style>
 *{font-family:나눔고딕,"Nanum Gothic","맑은 고딕","Malgun Gothic";font-size:1em;}
-body{margin:0;padding:0}
+body,textarea{margin:0;padding:0}
 pre{border:1px solid #ddd;line-height:1.3em;padding:1em;}
 textarea{width:100%;margin:0 auto;}
-#wrap_textarea{margin:0 auto;width:95%;}
 textarea#new{width:0px;height:0px;}
+.dv-input{padding:0 10px}
+.dv-report{padding:0 10px}
+button#btn_copyresult{width:100%;height:30px;}
 </style>
 <script>
 var textInput = "#input";
 var ck_include_header = "#ck_include_header";//헤더 포함 체크박스ID
 var ck_reverse = "#ck_reverse";
+var result;
 
 $(document).ready(function(){
-	$(textInput).on("input",fnInput);
-	$(ck_include_header).on("change",fnInput);
-	$(ck_reverse).on("change",fnInput);
-
-	$("#output").on("click",function(){
-		var text = $(this).text();
-		copyToClipboard(text);
-	});
+	onChangeEventListener();
+	onClickButtonEventListener();
 });
-
-function fnInput()
+/**
+* on change
+*/
+function onChangeEventListener()
 {
+	$(textInput).on("input",convertString);
+	$(ck_include_header).on("change",convertString);
+	$(ck_reverse).on("change",convertString);
+}
+function onClickButtonEventListener()
+{
+	$("#btn_copyresult").on("click",function(e){
+		e.preventDefault();
+		copyToClipboard(result);
+	});
+}
+/**
+* convert string
+*/
+function convertString()
+{
+	result = "";
 	var data = $(textInput).val();
-	var result = "";
 	var isReverse = $(ck_reverse).prop("checked");
 
 	if(isReverse){
-		result = appendResultReverse(data);
+		result = decodeString(data);
 	} else {
-		result = appendResult(data);
+		result = encodeString(data);
 	}
 
 	$("#output").text(result);
 
-	function appendResult(data)
+	function encodeString(data)
 	{
 		var result = "";
 		var list = data.split(/\n/);//줄 단위로 분리
@@ -84,7 +99,7 @@ function fnInput()
 		return result;
 	}
 
-	function appendResultReverse(data)
+	function decodeString(data)
 	{
 		var result = "";
 		data = data.replace(/(\n\|\})/,"");//제일 끝부분
@@ -129,27 +144,33 @@ function fnInput()
 	}
 }
 /**
-* http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+* source : http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
 */
 function copyToClipboard(text) {
 	var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
-    if (window.clipboardData) { // Internet Explorer
-        caseIE(text);
+	if (window.clipboardData) { // Internet Explorer
+		caseIE(text);
 	} else if(isFirefox){
 		caseFirefox(text);
-    } else {  
+	} else {
 		if(typeof unsafeWindow != 'undefined'){
 			caseFirefox(text);
 		} else {
 			executeCopy(text);
 		}
-    }
+	}
+	/*
+	* 익스플로러의 경우
+	*/
 	function caseIE(text)
 	{
 		if(console) console.log("caseIE");
-        window.clipboardData.setData("Text", text);
+		window.clipboardData.setData("Text", text);
 	}
+	/*
+	* 파이어폭스의 경우
+	*/
 	function caseFirefox(text)
 	{
 		if(console) console.log("caseFirefox");
@@ -161,23 +182,10 @@ function copyToClipboard(text) {
 		const clipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);  
 		clipboardHelper.copyString(text);
 	}
-
-}
-function executeCopy(text) 
-{
-	noneJquery(text);
-	function caseJquery(text)
-	{
-		$("<textarea></textarea>").attr('id','new').val(text).appendTo('body').focus().select();
-		try{
-			document.execCommand('Copy');
-		} catch(e) {
-			if(console) console.log(e);
-		}
-		$("textarea#new").remove();
-	}
-
-	function noneJquery(text)
+	/*
+	* 일반적인 경우
+	*/
+	function executeCopy(text)
 	{
 		var input = document.createElement('textarea');
 		document.body.appendChild(input);
@@ -192,17 +200,39 @@ function executeCopy(text)
 		}
 		input.remove();
 	}
+	/*
+	* 잘 안 됨.
+	*/
+	function caseJquery(text)
+	{
+		$("<textarea></textarea>").attr('id','new').val(text).appendTo('body').focus().select();
+		try{
+			document.execCommand('Copy');
+		} catch(e) {
+			if(console) console.log(e);
+		}
+		$("textarea#new").remove();
+	}
 }
 </script>
 </head>
 <body>
-<div id="wrap_textarea">
-<p>엑셀에서 copy paste<p>
-<textarea rows="14" cols="100" id="input"></textarea>
+<div id="wrap">
+	<div class="dv-input">
+		<p>입력 (엑셀에서 복사 후 붙여넣기)<p>
+		<textarea rows="14" cols="100" id="input"></textarea>
+	</div>
+	<div class="dv-options">
+		<p><input type="checkbox" id="ck_include_header" checked="checked"/><label for="ck_include_header">헤더 포함</label><input type="checkbox" id="ck_reverse"/><label for="ck_reverse">Reverse</label></p>
+	</div>
+	<div class="dv-report">
+		<button id="btn_copyresult">copy</button>
+		<p>결과</p>
+		<pre id="output"></pre>
+	</div>
+	<div class="footer">
+		<p>© 2016 http://e2xist.github.io/excel2mediawiki/</p>
+	</div>
 </div>
-<p><input type="checkbox" id="ck_include_header" checked="checked"/><label for="ck_include_header">헤더 포함</label><input type="checkbox" id="ck_reverse"/><label for="ck_reverse">Reverse</label></p>
-
-<p>결과</p>
-<pre id="output"></pre>
 </body>
 </html>
