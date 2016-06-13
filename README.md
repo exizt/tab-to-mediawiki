@@ -2,7 +2,7 @@
 엑셀 형식에서 미디어위키 형식으로 변환합니다. 
 
 # 바로 사용하기
-<a href="http://e2xist.github.io/excel2mediawiki/" target="_blank">바로 사용하기</a>
+http://e2xist.github.io/excel2mediawiki/
 
 해당 주소에서 바로 이용하실 수 있습니다.
 
