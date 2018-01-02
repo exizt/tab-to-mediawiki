@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, width=device-width" />
 <meta charset="utf-8"> 
-<title>엑셀 -> 미디어위키</title>
+<title>Excel Table to MediaWiki Table</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <style>
 *{font-family:나눔고딕,"Nanum Gothic","맑은 고딕","Malgun Gothic";font-size:1em;}
@@ -18,7 +18,7 @@ button#btn_copyresult{width:100%;height:30px;}
 </style>
 <script>
 var textInput = "#input";
-var ck_include_header = "#ck_include_header";//헤더 포함 체크박스ID
+var ck_include_header = "#ck_include_header";// 
 var ck_reverse = "#ck_reverse";
 var result;
 
@@ -162,7 +162,7 @@ function copyToClipboard(text) {
 		}
 	}
 	/*
-	* 익스플로러의 경우
+	* old IE version
 	*/
 	function caseIE(text)
 	{
@@ -170,7 +170,7 @@ function copyToClipboard(text) {
 		window.clipboardData.setData("Text", text);
 	}
 	/*
-	* 파이어폭스의 경우
+	* firefox 
 	*/
 	function caseFirefox(text)
 	{
@@ -228,7 +228,7 @@ function copyToClipboard(text) {
 	</div>
 	<div class="dv-report">
 		<button id="btn_copyresult">copy</button>
-		<p>결과</p>
+		<p>Results</p>
 		<pre id="output"></pre>
 	</div>
 	<div class="footer">
