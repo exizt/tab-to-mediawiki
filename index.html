@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, width=device-width" />
 <meta charset="utf-8"> 
-<title>Excel Table to MediaWiki Table</title>
+<title>Mediawiki Table Converter</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <style>
 *{font-family:나눔고딕,"Nanum Gothic","맑은 고딕","Malgun Gothic";font-size:1em;}
@@ -18,23 +18,28 @@ button#btn_copyresult{width:100%;height:30px;}
 </style>
 <script>
 var textInput = "#input";
-var ck_include_header = "#ck_include_header";// 
-var ck_reverse = "#ck_reverse";
 var result;
+var converterOptions = {
+		isIncludedHeader:true,
+		isReverse:false,
+		isOnlyItems:false,
+		isSortable:false
+	};
+var converterTags = {
+		isIncludedHeader:"#opt_included_header",
+		isReverse:"#opt_reverse",
+		isOnlyItems:"#opt_only_items",
+		isSortable:"#opt_sortable"
+	};
 
 $(document).ready(function(){
 	onChangeEventListener();
 	onClickButtonEventListener();
 });
+
 /**
-* on change
+*
 */
-function onChangeEventListener()
-{
-	$(textInput).on("input",convertString);
-	$(ck_include_header).on("change",convertString);
-	$(ck_reverse).on("change",convertString);
-}
 function onClickButtonEventListener()
 {
 	$("#btn_copyresult").on("click",function(e){
@@ -42,6 +47,37 @@ function onClickButtonEventListener()
 		copyToClipboard(result);
 	});
 }
+
+/**
+* on change
+*/
+function onChangeEventListener()
+{
+	$(textInput).on("input",convertString);
+
+	// when option is changed
+	$(converterTags.isReverse).on("change",changeConverterOption);
+	$(converterTags.isIncludedHeader).on("change",changeConverterOption);
+	$(converterTags.isOnlyItems).on("change",changeConverterOption);
+	$(converterTags.isSortable).on("change",changeConverterOption);
+}
+
+
+
+/**
+* converter 옵션 변경이 될 때
+*/
+function changeConverterOption(){
+	converterOptions.isReverse = $(converterTags.isReverse).prop("checked");
+	converterOptions.isIncludedHeader = $(converterTags.isIncludedHeader).prop("checked");
+	converterOptions.isOnlyItems = $(converterTags.isOnlyItems).prop("checked");
+	converterOptions.isSortable = $(converterTags.isSortable).prop("checked");
+	// run converting text
+	convertString();
+}
+
+
+
 /**
 * convert string
 */
@@ -49,9 +85,8 @@ function convertString()
 {
 	result = "";
 	var data = $(textInput).val();
-	var isReverse = $(ck_reverse).prop("checked");
 
-	if(isReverse){
+	if(converterOptions.isReverse){
 		result = decodeString(data);
 	} else {
 		result = encodeString(data);
@@ -64,9 +99,12 @@ function convertString()
 		var result = "";
 		var list = data.split(/\n/);//줄 단위로 분리
 
-		var isHeader = $(ck_include_header).prop("checked");
-		if(isHeader){
-			result += "{| class=\"wikitable sortable\"\n";
+		if(!converterOptions.isOnlyItems){
+			if(converterOptions.isSortable){
+				result += "{| class=\"wikitable sortable\"\n";
+			} else {
+				result += "{| class=\"wikitable\"\n";
+			}
 		}
 
 		for(var k in list)
@@ -78,7 +116,7 @@ function convertString()
 				continue;
 			}
 			
-			if(isHeader && k==0){
+			if(converterOptions.isIncludedHeader && k==0){
 				item = item.replace(/\t/g," !! ");
 			} else {
 				item = item.replace(/\t/g," || ");
@@ -86,7 +124,7 @@ function convertString()
 
 			// append result
 			result += "|-\n";
-			if(isHeader && k==0){
+			if(converterOptions.isIncludedHeader && k==0){
 				result += "! ";
 			} else {
 				result += "| ";
@@ -94,7 +132,7 @@ function convertString()
 			result += item;
 			result += "\n";
 		}
-		if(isHeader){
+		if(!converterOptions.isOnlyItems){
 			result += "|}";
 		}
 		return result;
@@ -224,7 +262,12 @@ function copyToClipboard(text) {
 		<textarea rows="14" cols="100" id="input"></textarea>
 	</div>
 	<div class="dv-options">
-		<p><input type="checkbox" id="ck_include_header" checked="checked"/><label for="ck_include_header">헤더 포함</label><input type="checkbox" id="ck_reverse"/><label for="ck_reverse">Reverse</label></p>
+		<p>
+			<input type="checkbox" id="opt_included_header" checked="checked"/><label for="opt_included_header">헤더 포함</label>
+			<input type="checkbox" id="opt_reverse"/><label for="opt_reverse">Reverse</label>
+			<input type="checkbox" id="opt_only_items"/><label for="opt_only_items">중간부분만</label>
+			<input type="checkbox" id="opt_sortable"/><label for="opt_sortable">sortable</label>
+		</p>
 	</div>
 	<div class="dv-report">
 		<button id="btn_copyresult">copy Result Text</button>
@@ -232,7 +275,7 @@ function copyToClipboard(text) {
 		<pre id="output"></pre>
 	</div>
 	<div class="footer">
-		<p>© 2018 exizt</p>
+		<p>© 2018 ezxizt</p>
 	</div>
 </div>
 </body>
