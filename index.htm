@@ -4,17 +4,10 @@
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, width=device-width" />
 <meta charset="utf-8"> 
 <title>Mediawiki Table Converter</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <style>
-*{font-family:나눔고딕,"Nanum Gothic","맑은 고딕","Malgun Gothic";font-size:1em;}
-html {overflow-y:scroll;}
-body,textarea{margin:0;padding:0}
-pre{border:1px solid #ddd;line-height:1.3em;padding:1em;}
-textarea{width:100%;margin:0 auto;}
-textarea#new{width:0px;height:0px;}
-.dv-input{padding:0 10px}
-.dv-report{padding:0 10px}
-button#btn_copyresult{width:100%;height:30px;}
+textarea{width:100%}
 </style>
 <script>
 var textInput = "#input";
@@ -32,75 +25,60 @@ var converterTags = {
 		isSortable:"#opt_sortable"
 	};
 
-$(document).ready(function(){
-	onChangeEventListener();
-	onClickButtonEventListener();
+document.addEventListener("DOMContentLoaded", function () {
+	/*
+	* onChangeEventListener
+	*/
+	function onLoadedEventListners(){
+		// 값 입력시
+		$(textInput).on("input",convert);
+
+		// 옵션 변경시
+		$(converterTags.isReverse).on("change",changeConverterOption);
+		$(converterTags.isIncludedHeader).on("change",changeConverterOption);
+		$(converterTags.isOnlyItems).on("change",changeConverterOption);
+		$(converterTags.isSortable).on("change",changeConverterOption);
+
+		// copy button
+		$("#btn_copyresult").on("click",function(e){
+			e.preventDefault();
+			copyToClipboard(result);
+		});
+	}
+	onLoadedEventListners();
 });
 
-/**
-*
-*/
-function onClickButtonEventListener()
-{
-	$("#btn_copyresult").on("click",function(e){
-		e.preventDefault();
-		copyToClipboard(result);
-	});
-}
 
 /**
-* on change
-*/
-function onChangeEventListener()
-{
-	$(textInput).on("input",convertString);
-
-	// when option is changed
-	$(converterTags.isReverse).on("change",changeConverterOption);
-	$(converterTags.isIncludedHeader).on("change",changeConverterOption);
-	$(converterTags.isOnlyItems).on("change",changeConverterOption);
-	$(converterTags.isSortable).on("change",changeConverterOption);
-}
-
-
-
-/**
-* converter 옵션 변경이 될 때
+* 옵션 변경이 될 때
 */
 function changeConverterOption(){
 	converterOptions.isReverse = $(converterTags.isReverse).prop("checked");
 	converterOptions.isIncludedHeader = $(converterTags.isIncludedHeader).prop("checked");
 	converterOptions.isOnlyItems = $(converterTags.isOnlyItems).prop("checked");
 	converterOptions.isSortable = $(converterTags.isSortable).prop("checked");
-	// run converting text
-	convertString();
+	convert();
+}
+
+function convert(){
+	result = "";
+	result = convertString($(textInput).val(), converterOptions);
+	$("#output").text(result);
 }
 
 
-
 /**
-* convert string
+* 변경
 */
-function convertString()
-{
-	result = "";
-	var data = $(textInput).val();
+function convertString(text, options) {
+	return (options.isReverse) ? decodeString(text, options) : encodeString(text, options);
 
-	if(converterOptions.isReverse){
-		result = decodeString(data);
-	} else {
-		result = encodeString(data);
-	}
-
-	$("#output").text(result);
-
-	function encodeString(data)
-	{
+	function encodeString(text, options){
 		var result = "";
-		var list = data.split(/\n/);//줄 단위로 분리
+		var list = text.split(/\n/);//줄 단위로 분리
 
-		if(!converterOptions.isOnlyItems){
-			if(converterOptions.isSortable){
+		if(!options.isOnlyItems){
+			if(options.isSortable){
 				result += "{| class=\"wikitable sortable\"\n";
 			} else {
 				result += "{| class=\"wikitable\"\n";
@@ -116,7 +94,7 @@ function convertString()
 				continue;
 			}
 			
-			if(converterOptions.isIncludedHeader && k==0){
+			if(options.isIncludedHeader && k==0){
 				item = item.replace(/\t/g," !! ");
 			} else {
 				item = item.replace(/\t/g," || ");
@@ -124,7 +102,7 @@ function convertString()
 
 			// append result
 			result += "|-\n";
-			if(converterOptions.isIncludedHeader && k==0){
+			if(options.isIncludedHeader && k==0){
 				result += "! ";
 			} else {
 				result += "| ";
@@ -132,17 +110,16 @@ function convertString()
 			result += item;
 			result += "\n";
 		}
-		if(!converterOptions.isOnlyItems){
+		if(!options.isOnlyItems){
 			result += "|}";
 		}
 		return result;
 	}
 
-	function decodeString(data)
-	{
+	function decodeString(text, options){
 		var result = "";
-		data = data.replace(/(\n\|\})/,"");//제일 끝부분
-		var list = data.split(/(\n\|-\n)/);//줄 단위로 분리
+		text = text.replace(/(\n\|\})/,"");//제일 끝부분
+		var list = text.split(/(\n\|-\n)/);//줄 단위로 분리
 
 		//console.log(list);
 
@@ -190,15 +167,11 @@ function copyToClipboard(text) {
 
 	if (window.clipboardData) { // Internet Explorer
 		caseIE(text);
-	} else if(isFirefox){
-		caseFirefox(text);
 	} else {
-		if(typeof unsafeWindow != 'undefined'){
-			caseFirefox(text);
-		} else {
-			executeCopy(text);
-		}
+		executeCopy(text);
 	}
+	$("#copy-msg").text("copied");
+
 	/*
 	* old IE version
 	*/
@@ -208,75 +181,50 @@ function copyToClipboard(text) {
 		window.clipboardData.setData("Text", text);
 	}
 	/*
-	* firefox 
-	*/
-	function caseFirefox(text)
-	{
-		if(console) console.log("caseFirefox");
-		if(typeof unsafeWindow != 'undefined'){
-			unsafeWindow.netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");  
-		} else {
-			if(console) console.log("caseFirefox error");
-		}
-		const clipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);  
-		clipboardHelper.copyString(text);
-	}
-	/*
 	* 일반적인 경우
 	*/
 	function executeCopy(text)
 	{
 		var input = document.createElement('textarea');
 		document.body.appendChild(input);
-		input.id="new";
 		input.value = text;
-		input.focus();
 		input.select();
 		try{
 			document.execCommand('Copy');
 		} catch(e) {
 			if(console) console.log(e);
 		}
-		input.remove();
-	}
-	/*
-	* 잘 안 됨.
-	*/
-	function caseJquery(text)
-	{
-		$("<textarea></textarea>").attr('id','new').val(text).appendTo('body').focus().select();
-		try{
-			document.execCommand('Copy');
-		} catch(e) {
-			if(console) console.log(e);
-		}
-		$("textarea#new").remove();
+		//input.remove();
+		document.body.removeChild(input);
 	}
 }
 </script>
 </head>
 <body>
-<div id="wrap">
-	<div class="dv-input">
-		<p>입력 (엑셀에서 복사 후 붙여넣기)<p>
-		<textarea rows="14" cols="100" id="input"></textarea>
+	<div class="container mt-2">
+		<div class="card">
+			<div class="card-body">
+				<h5>입력</h5>
+				<textarea rows="14" cols="100" id="input"></textarea>
+				<div class="dv-options">
+					<input type="checkbox" id="opt_included_header" checked="checked"/><label for="opt_included_header">헤더 포함</label>
+					<input type="checkbox" id="opt_reverse"/><label for="opt_reverse">Reverse</label>
+					<input type="checkbox" id="opt_only_items"/><label for="opt_only_items">중간부분만</label>
+					<input type="checkbox" id="opt_sortable"/><label for="opt_sortable">sortable</label>
+				</div>
+			</div>
+		</div>
+		<div class="card mt-3">
+			<div class="card-body">
+				<h5>결과&nbsp;<button id="btn_copyresult" class="btn btn-primary btn-sm">결과 복사</button>
+					<span class="text-muted" id="copy-msg"></span>
+				</h5>
+				<div class="overflow-auto" style="height: 10rem;">
+					<pre id="output"></pre>
+				</div>
+			</div>
+		</div>
+		<p class="text-right">© 2020 <a href="https://github.com/exizt" target="_blank">exizt</a></p>
 	</div>
-	<div class="dv-options">
-		<p>
-			<input type="checkbox" id="opt_included_header" checked="checked"/><label for="opt_included_header">헤더 포함</label>
-			<input type="checkbox" id="opt_reverse"/><label for="opt_reverse">Reverse</label>
-			<input type="checkbox" id="opt_only_items"/><label for="opt_only_items">중간부분만</label>
-			<input type="checkbox" id="opt_sortable"/><label for="opt_sortable">sortable</label>
-		</p>
-	</div>
-	<div class="dv-report">
-		<button id="btn_copyresult">copy</button>
-		<p>결과</p>
-		<pre id="output"></pre>
-	</div>
-	<div class="footer">
-		<p>© 2020 <a href="https://github.com/exizt" target="_blank">exizt</a></p>
-	</div>
-</div>
 </body>
 </html>
