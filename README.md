@@ -3,7 +3,7 @@ changes table format date on excel (tab style) to mediawiki table format style
 
 
 # Link
-https://exizt.github.io/excel-to-mediawiki/
+https://exizt.github.io/tab-to-mediawiki/
 
 This link is available.
 
