@@ -5,67 +5,70 @@
 <meta charset="utf-8"> 
 <title>Mediawiki Table Converter</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <style>
 textarea{width:100%}
 </style>
 <script>
-var textInput = "#input";
-var result;
-var converterOptions = {
-		isIncludedHeader:true,
-		isReverse:false,
-		isOnlyItems:false,
-		isSortable:false
-	};
-var converterTags = {
-		isIncludedHeader:"#opt_included_header",
-		isReverse:"#opt_reverse",
-		isOnlyItems:"#opt_only_items",
-		isSortable:"#opt_sortable"
-	};
+var TTTConverter = {
+	output: '',
+	options : {
+		isIncludedHeader: true,
+		isReverse: false,
+		isOnlyItems: false,
+		isSortable: false
+	},
+	selectors : {
+		isIncludedHeader: "#opt_included_header",
+		isReverse: "#opt_reverse",
+		isOnlyItems: "#opt_only_items",
+		isSortable: "#opt_sortable",
+		textInput: "#input",
+		copyBtn: "#btn_copyresult",
+		output: "#output"
+	}
+}
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", ()=> {
+	onLoadedEventListners();
 	/*
-	* onChangeEventListener
+	* 이벤트 리스너
 	*/
 	function onLoadedEventListners(){
+		let sel = TTTConverter.selectors;
+		let opt = TTTConverter.options;
 		// 값 입력시
-		$(textInput).on("input",convert);
+		addEv(sel.textInput, 'input', convert);
 
 		// 옵션 변경시
-		$(converterTags.isReverse).on("change",changeConverterOption);
-		$(converterTags.isIncludedHeader).on("change",changeConverterOption);
-		$(converterTags.isOnlyItems).on("change",changeConverterOption);
-		$(converterTags.isSortable).on("change",changeConverterOption);
+		onChangeEv(sel.isReverse, (e)=>{ opt.isReverse = e.target.checked; convert(); })
+		onChangeEv(sel.isIncludedHeader, (e)=>{ opt.isIncludedHeader = e.target.checked; convert(); })
+		onChangeEv(sel.isOnlyItems, (e)=>{ opt.isOnlyItems = e.target.checked; convert(); })
+		onChangeEv(sel.isSortable, (e)=>{ opt.isSortable = e.target.checked; convert(); })
 
-		// copy button
-		$("#btn_copyresult").on("click",function(e){
+		addEv(sel.copyBtn, 'click', (e)=>{
 			e.preventDefault();
-			copyToClipboard(result);
-		});
+			copyToClipboard(TTTConverter.output);
+		})
 	}
-	onLoadedEventListners();
+	
+	function addEv(sel, type, event){
+		document.querySelector(sel).addEventListener(type, event);
+	}
+
+	function onChangeEv(sel, event){
+		addEv(sel, 'change', event)
+	}
 });
 
 
 /**
-* 옵션 변경이 될 때
+* 변환
 */
-function changeConverterOption(){
-	converterOptions.isReverse = $(converterTags.isReverse).prop("checked");
-	converterOptions.isIncludedHeader = $(converterTags.isIncludedHeader).prop("checked");
-	converterOptions.isOnlyItems = $(converterTags.isOnlyItems).prop("checked");
-	converterOptions.isSortable = $(converterTags.isSortable).prop("checked");
-	convert();
-}
-
 function convert(){
-	result = "";
-	result = convertString($(textInput).val(), converterOptions);
-	$("#output").text(result);
+	let sel = TTTConverter.selectors
+	TTTConverter.output = convertString(document.querySelector(sel.textInput).value, TTTConverter.options);
+	document.querySelector(sel.output).innerHTML = TTTConverter.output;
 }
-
 
 /**
 * 변경
@@ -74,8 +77,8 @@ function convertString(text, options) {
 	return (options.isReverse) ? decodeString(text, options) : encodeString(text, options);
 
 	function encodeString(text, options){
-		var result = "";
-		var list = text.split(/\n/);//줄 단위로 분리
+		let result = "";
+		let list = text.split(/\n/);//줄 단위로 분리
 
 		if(!options.isOnlyItems){
 			if(options.isSortable){
@@ -85,10 +88,10 @@ function convertString(text, options) {
 			}
 		}
 
-		for(var k in list)
+		for(let k in list)
 		{
 			//change item
-			var item = list[k];
+			let item = list[k];
 
 			if(item.replace(/(^\s*)|(\s*$)/gi, "")==""){
 				continue;
@@ -170,7 +173,7 @@ function copyToClipboard(text) {
 	} else {
 		executeCopy(text);
 	}
-	$("#copy-msg").text("copied");
+	//$("#copy-msg").text("copied");
 
 	/*
 	* old IE version
@@ -208,7 +211,7 @@ function copyToClipboard(text) {
 				<textarea rows="14" cols="100" id="input"></textarea>
 				<div class="dv-options">
 					<input type="checkbox" id="opt_included_header" checked="checked"/><label for="opt_included_header">헤더 포함</label>
-					<input type="checkbox" id="opt_reverse"/><label for="opt_reverse">Reverse</label>
+					<input type="checkbox" id="opt_reverse"/><label for="opt_reverse">반전</label>
 					<input type="checkbox" id="opt_only_items"/><label for="opt_only_items">중간부분만</label>
 					<input type="checkbox" id="opt_sortable"/><label for="opt_sortable">sortable</label>
 				</div>
