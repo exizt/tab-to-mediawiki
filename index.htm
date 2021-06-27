@@ -4,230 +4,47 @@
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, width=device-width" />
 <meta charset="utf-8"> 
 <title>Mediawiki Table Converter</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<style>
-textarea{width:100%}
-</style>
-<script>
-var TTTConverter = {
-	output: '',
-	options : {
-		isIncludedHeader: true,
-		isReverse: false,
-		isOnlyItems: false,
-		isSortable: false
-	},
-	selectors : {
-		isIncludedHeader: "#opt_included_header",
-		isReverse: "#opt_reverse",
-		isOnlyItems: "#opt_only_items",
-		isSortable: "#opt_sortable",
-		textInput: "#input",
-		copyBtn: "#btn_copyresult",
-		output: "#output"
-	}
-}
-
-document.addEventListener("DOMContentLoaded", ()=> {
-	onLoadedEventListners();
-	/*
-	* 이벤트 리스너
-	*/
-	function onLoadedEventListners(){
-		let sel = TTTConverter.selectors;
-		let opt = TTTConverter.options;
-		// 값 입력시
-		addEv(sel.textInput, 'input', convert);
-
-		// 옵션 변경시
-		onChangeEv(sel.isReverse, (e)=>{ opt.isReverse = e.target.checked; convert(); })
-		onChangeEv(sel.isIncludedHeader, (e)=>{ opt.isIncludedHeader = e.target.checked; convert(); })
-		onChangeEv(sel.isOnlyItems, (e)=>{ opt.isOnlyItems = e.target.checked; convert(); })
-		onChangeEv(sel.isSortable, (e)=>{ opt.isSortable = e.target.checked; convert(); })
-
-		addEv(sel.copyBtn, 'click', (e)=>{
-			e.preventDefault();
-			copyToClipboard(TTTConverter.output);
-		})
-	}
-	
-	function addEv(sel, type, event){
-		document.querySelector(sel).addEventListener(type, event);
-	}
-
-	function onChangeEv(sel, event){
-		addEv(sel, 'change', event)
-	}
-});
-
-
-/**
-* 변환
-*/
-function convert(){
-	let sel = TTTConverter.selectors
-	TTTConverter.output = convertString(document.querySelector(sel.textInput).value, TTTConverter.options);
-	document.querySelector(sel.output).innerHTML = TTTConverter.output;
-}
-
-/**
-* 변경
-*/
-function convertString(text, options) {
-	return (options.isReverse) ? decodeString(text, options) : encodeString(text, options);
-
-	function encodeString(text, options){
-		let result = "";
-		let list = text.split(/\n/);//줄 단위로 분리
-
-		if(!options.isOnlyItems){
-			if(options.isSortable){
-				result += "{| class=\"wikitable sortable\"\n";
-			} else {
-				result += "{| class=\"wikitable\"\n";
-			}
-		}
-
-		for(let k in list)
-		{
-			//change item
-			let item = list[k];
-
-			if(item.replace(/(^\s*)|(\s*$)/gi, "")==""){
-				continue;
-			}
-			
-			if(options.isIncludedHeader && k==0){
-				item = item.replace(/\t/g," !! ");
-			} else {
-				item = item.replace(/\t/g," || ");
-			}
-
-			// append result
-			result += "|-\n";
-			if(options.isIncludedHeader && k==0){
-				result += "! ";
-			} else {
-				result += "| ";
-			}
-			result += item;
-			result += "\n";
-		}
-		if(!options.isOnlyItems){
-			result += "|}";
-		}
-		return result;
-	}
-
-	function decodeString(text, options){
-		var result = "";
-		text = text.replace(/(\n\|\})/,"");//제일 끝부분
-		var list = text.split(/(\n\|-\n)/);//줄 단위로 분리
-
-		//console.log(list);
-
-		for(var k in list)
-		{
-			var item = list[k];
-
-			if(item.replace(/(\n\|-\n)/gi, "")==""){
-				continue;
-			}
-			//상단 구문 제거
-			if(k<=1)
-			{
-				var firstcheck = /(^\{\|)/i;
-				if(firstcheck.test(item))
-				{
-					continue;
-				}
-			}
-
-			// 앞부분 처리
-			item = item.replace(/(^!)/,"");
-			item = item.replace(/(^\|)/,"");
-
-			// 공백 처리
-			item = item.replace(/(^\s)|(\s*$)/gi,"");// trim 처리 => 빈칸없앰
-			item = item.replace(/(\s*\|\|\s*)/g,"\|\|");//세부별 trim 처리 => 빈칸없앰
-			item = item.replace(/(\s*!!\s*)/g,"!!");//세부별 trim 처리 => 빈칸없앰
-
-			// 탭으로 변경
-			item = item.replace(/(\|\|)/gi,"\t");//|| => 탭
-			item = item.replace(/(!!)/gi,"\t");// !! => 탭
-
-			result += item;
-			result += "\n";
-		}
-		return result;
-	}
-}
-/**
-* source : http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
-*/
-function copyToClipboard(text) {
-	var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-
-	if (window.clipboardData) { // Internet Explorer
-		caseIE(text);
-	} else {
-		executeCopy(text);
-	}
-	//$("#copy-msg").text("copied");
-
-	/*
-	* old IE version
-	*/
-	function caseIE(text)
-	{
-		if(console) console.log("caseIE");
-		window.clipboardData.setData("Text", text);
-	}
-	/*
-	* 일반적인 경우
-	*/
-	function executeCopy(text)
-	{
-		var input = document.createElement('textarea');
-		document.body.appendChild(input);
-		input.value = text;
-		input.select();
-		try{
-			document.execCommand('Copy');
-		} catch(e) {
-			if(console) console.log(e);
-		}
-		//input.remove();
-		document.body.removeChild(input);
-	}
-}
-</script>
+<link href="./assets/bootstrap.min.css" rel="stylesheet">
+<script src="./dist/Tab2Mediawiki.js"></script>
+<script src="./assets/index.js"></script>
 </head>
 <body>
-	<div class="container mt-2">
-		<div class="card">
-			<div class="card-body">
-				<h5>입력</h5>
-				<textarea rows="14" cols="100" id="input"></textarea>
-				<div class="dv-options">
-					<input type="checkbox" id="opt_included_header" checked="checked"/><label for="opt_included_header">헤더 포함</label>
-					<input type="checkbox" id="opt_reverse"/><label for="opt_reverse">반전</label>
-					<input type="checkbox" id="opt_only_items"/><label for="opt_only_items">중간부분만</label>
-					<input type="checkbox" id="opt_sortable"/><label for="opt_sortable">sortable</label>
-				</div>
-			</div>
-		</div>
-		<div class="card mt-3">
-			<div class="card-body">
-				<h5>결과&nbsp;<button id="btn_copyresult" class="btn btn-primary btn-sm">결과 복사</button>
-					<span class="text-muted" id="copy-msg"></span>
-				</h5>
-				<div class="overflow-auto" style="height: 10rem;">
-					<pre id="output"></pre>
-				</div>
-			</div>
-		</div>
-		<p class="text-right">© 2020 <a href="https://github.com/exizt" target="_blank">exizt</a></p>
-	</div>
+    <div class="container mt-2">
+        <div class="card">
+            <div class="card-body">
+                <h5>입력</h5>
+                <textarea rows="14" cols="100" id="input" style="width:100%"></textarea>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="opt_included_header" checked="checked">
+                        <label class="form-check-label" for="opt_included_header">헤더 포함</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="opt_reverse">
+                        <label class="form-check-label" for="opt_reverse">반전</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="opt_only_items">
+                        <label class="form-check-label" for="opt_only_items">중간부분만</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="opt_sortable">
+                        <label class="form-check-label" for="opt_sortable">sortable 옵션</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5>결과&nbsp;<button id="btn_copyresult" class="btn btn-primary btn-sm">결과 복사</button>
+                    <span class="text-muted" id="copy-msg"></span>
+                </h5>
+                <div class="overflow-auto" style="height: 10rem;">
+                    <pre id="output"></pre>
+                </div>
+            </div>
+        </div>
+        <p class="text-end">© 2016-2021 <a href="https://github.com/exizt" target="_blank">exizt</a></p>
+    </div>
 </body>
 </html>
