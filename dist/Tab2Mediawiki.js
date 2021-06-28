@@ -1,6 +1,6 @@
 "use strict";
 /**
- * Tab1Mediawiki 1.1.0
+ * Tab1Mediawiki 1.1.11
  */
 class Tab2Mediawiki {
     /**
