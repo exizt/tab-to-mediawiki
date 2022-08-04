@@ -4,47 +4,57 @@
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, width=device-width" />
 <meta charset="utf-8"> 
 <title>Mediawiki Table Converter</title>
-<link href="./assets/bootstrap.min.css" rel="stylesheet">
+<link href="./assets/reset.css" rel="stylesheet">
+<link href="./assets/app.css" rel="stylesheet">
 <script src="./dist/Tab2Mediawiki.js"></script>
 <script src="./dist/app.js"></script>
 </head>
 <body>
-    <div class="container mt-2">
-        <div class="card">
-            <div class="card-body">
-                <h5>입력</h5>
-                <textarea rows="14" cols="100" id="input" style="width:100%"></textarea>
-                <div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="opt_included_header" checked="checked">
-                        <label class="form-check-label" for="opt_included_header">헤더 포함</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="opt_reverse">
-                        <label class="form-check-label" for="opt_reverse">반전</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="opt_only_items">
-                        <label class="form-check-label" for="opt_only_items">중간부분만</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="opt_sortable">
-                        <label class="form-check-label" for="opt_sortable">sortable 옵션</label>
-                    </div>
+    <div class="t2m-container">
+        <div class="t2m-box t2m-box-input">
+            <div>
+                <h1 class="t2m-box-title">입력</h1>
+                <div class="t2m-box-textwrap">
+                    <textarea rows="14" id="input" placeholder="" autofocus></textarea>
                 </div>
             </div>
+            <div class="t2m-box-input-options">
+                <label class="check-wrap" for="opt_included_header">헤더 포함
+                    <input type="checkbox" id="opt_included_header" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+
+                <label class="check-wrap" for="opt_reverse">반전
+                    <input type="checkbox" id="opt_reverse">
+                    <span class="checkmark"></span>
+                </label>
+
+                <label class="check-wrap" for="opt_only_items">중간부분만
+                    <input type="checkbox" id="opt_only_items">
+                    <span class="checkmark"></span>
+                </label>
+
+                <label class="check-wrap" for="opt_sortable">sortable 옵션
+                    <input type="checkbox" id="opt_sortable">
+                    <span class="checkmark"></span>
+                </label>
+
+            </div>
         </div>
-        <div class="card mt-3">
-            <div class="card-body">
-                <h5>결과&nbsp;<button id="btn_copyresult" class="btn btn-primary btn-sm">결과 복사</button>
-                    <span class="text-muted" id="copy-msg"></span>
-                </h5>
-                <div class="overflow-auto" style="height: 10rem;">
+        <div class="t2m-box t2m-box-output">
+            <div>
+                <h1 class="t2m-box-title">결과</h1>
+                <div class="t2m-box-textwrap">
                     <pre id="output"></pre>
                 </div>
             </div>
+            <div style="padding: 1rem 1rem">
+                <button id="btn_copyresult" class="btn btn-primary btn-sm">결과 복사</button>
+            </div>
         </div>
-        <p class="text-end">© 2016-2022 <a href="https://github.com/exizt" target="_blank">exizt</a></p>
+    </div>
+    <div style="text-align:right; padding: 0 1rem">
+        <p>© 2016-2022 <a href="https://github.com/exizt" target="_blank">exizt</a></p>
     </div>
 </body>
 </html>
