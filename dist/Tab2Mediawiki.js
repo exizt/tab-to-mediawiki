@@ -7,12 +7,14 @@ class Tab2Mediawiki {
      * constructor
      */
     constructor() {
+        this.output = '';
     }
     /**
     * 변경
     */
     convert(text, options) {
-        return (options.isReverse) ? this.decodeString(text, options) : this.encodeString(text, options);
+        this.output = '';
+        this.output = (options.isReverse) ? this.decodeString(text, options) : this.encodeString(text, options);
     }
     /**
      * tab to mediawiki format

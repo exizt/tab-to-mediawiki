@@ -2,6 +2,7 @@
  * Tab1Mediawiki 1.1.11
  */
 class Tab2Mediawiki {
+    output: string = '';
 
     /**
      * constructor
@@ -14,7 +15,8 @@ class Tab2Mediawiki {
     * 변경
     */
     convert(text: string, options: ITab2MediawikiOptions) {
-        return (options.isReverse) ? this.decodeString(text, options) : this.encodeString(text, options);
+        this.output = ''
+        this.output = (options.isReverse) ? this.decodeString(text, options) : this.encodeString(text, options);
 
     }
 
