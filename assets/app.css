@@ -50,6 +50,12 @@
 .t2m-box-output .t2m-box-header button{
     font-size: 14px;
 }
+.t2m-help {
+    font-size:0.7em; 
+    font-style:italic; 
+    opacity: 0.8;
+    margin-top: 1rem;
+}
 
 @media (min-width: 800px) {
     .t2m-container {
