@@ -1,0 +1,60 @@
+/* (https://www.daleseo.com/css-buttons/)에서 큰 도움 받음 */
+:root {
+    --button-color: #ffffff;
+    --button-bg-color: #0d6efd;
+    --button-hover-bg-color: #025ce2;
+}
+
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    background: var(--button-bg-color);
+    color: var(--button-color);
+
+    margin: 0;
+    padding: 0.5em 1em;
+
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.8em;
+    text-align: center;
+    text-decoration: none;
+
+    border: none;
+    border-radius: 0.25em;
+
+    display: inline-block;
+    width: auto;
+
+    cursor: pointer;
+
+    transition: 0.5s;
+}
+
+button.primary {
+    --button-bg-color: hsl(208, 56%, 46%);
+    --button-hover-bg-color: hsl(208, 56%, 36%);
+}
+
+button.secondary {
+    --button-bg-color: hsl(208, 7%, 46%);
+    --button-hover-bg-color: hsl(208, 7%, 26%);
+}
+
+button.success {
+    --button-bg-color: hsl(165, 58%, 65%);
+    --button-hover-bg-color: hsl(165, 58%, 45%);
+}
+
+button.info {
+    --button-bg-color: hsl(194, 66%, 61%);
+    --button-hover-bg-color: hsl(194, 66%, 41%);
+}
+
+button:active,
+button:hover,
+button:focus {
+    background: var(--button-hover-bg-color);
+    outline: 0;
+}

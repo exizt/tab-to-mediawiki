@@ -1,0 +1,71 @@
+/* checkbox (https://www.w3schools.com/howto/howto_css_custom_checkbox.asp) 에서 개선 */
+/* The container */
+.check-wrap {
+    display: inline-block;
+    position: relative;
+    padding-left: 1.6em;
+    margin-bottom: 0.55em;
+    cursor: pointer;
+    /*font-size: 22px;*/
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-right: 0.8em;
+}
+
+/* Hide the browser's default checkbox */
+.check-wrap input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.check-wrap .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1.14em;
+    width: 1.14em;
+    background-color: #eee;
+    border-radius: 0.18em;
+    margin-top: 0.13em
+}
+
+/* On mouse-over, add a grey background color */
+.check-wrap:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.check-wrap input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.check-wrap .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.check-wrap input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.check-wrap .checkmark:after {
+    left: 0.4em;
+    top: 0.22em;
+    width: 0.22em;
+    height: 0.45em;
+    border: solid white;
+    border-width: 0 0.14em 0.14em 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}

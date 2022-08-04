@@ -6,6 +6,8 @@
 <title>Mediawiki Table Converter</title>
 <link href="./assets/reset.css" rel="stylesheet">
 <link href="./assets/app.css" rel="stylesheet">
+<link href="./assets/checkbox.css" rel="stylesheet">
+<link href="./assets/button.css" rel="stylesheet">
 <script src="./dist/Tab2Mediawiki.js"></script>
 <script src="./dist/app.js"></script>
 </head>
@@ -13,7 +15,7 @@
     <div class="t2m-container">
         <div class="t2m-box t2m-box-input">
             <div>
-                <h1 class="t2m-box-title">입력</h1>
+                <h1 class="t2m-box-header">입력</h1>
                 <div class="t2m-box-textwrap">
                     <textarea rows="14" id="input" placeholder="" autofocus></textarea>
                 </div>
@@ -42,14 +44,12 @@
             </div>
         </div>
         <div class="t2m-box t2m-box-output">
-            <div>
-                <h1 class="t2m-box-title">결과</h1>
-                <div class="t2m-box-textwrap">
-                    <pre id="output"></pre>
-                </div>
+            <div class="t2m-box-header">
+                <h1>결과</h1>
+                <button id="btn_copyresult" class="primary">결과 복사</button>
             </div>
-            <div style="padding: 1rem 1rem">
-                <button id="btn_copyresult" class="btn btn-primary btn-sm">결과 복사</button>
+            <div class="t2m-box-textwrap">
+                <pre id="output"></pre>
             </div>
         </div>
     </div>
