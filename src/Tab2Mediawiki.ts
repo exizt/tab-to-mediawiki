@@ -53,15 +53,21 @@ class Tab2Mediawiki {
             }
 
             // append result
-            result += "|-\n";
+            let it = "|-\n";
+            // result += "|-\n";
             if (options.isIncludedHeader && i == 0) {
-                result += "! ";
+                it += "! ";
             } else {
-                result += "| ";
+                it += "| ";
             }
-            result += item;
-            result += "\n";
+            it += item;
+            it += "\n";
+            // result += it
+            list[key] = it
         }
+
+        result += list.join('\n')
+
         if (!options.isOnlyItems) {
             result += "|}";
         }
