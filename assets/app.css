@@ -1,8 +1,11 @@
 .t2m-container {
     display: grid;
     grid-template-columns: 1fr;
-    margin: 20px 10px;
     row-gap: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 .t2m-container, textarea {
     font-size: 20px;
@@ -13,12 +16,14 @@
     border: 1px solid #afafaf;
     border-radius: 5px;
     /*vertical-align: middle;*/
-
 }
 .t2m-box-header {
     display: block;
     padding: 0.75rem 0.75rem;
     border-bottom: 1px solid #afafaf
+}
+.t2m-box-textwrap {
+    padding: 16px 16px;
 }
 .t2m-box-input {
     display: grid;
@@ -26,22 +31,19 @@
 }
 .t2m-box-input textarea{
     border: 0;
-    box-sizing: border-box;
     width: 100%;
     resize: none;
     outline: none !important;
+    padding: 0
 }
 .t2m-box-input-options {
     padding: 1rem 1rem;
     font-size: 0.875em;
     text-align:right;
 }
-.t2m-box-textwrap {
-    padding: 16px 16px;
-}
-.t2m-box-output pre{
-    word-break: break-all;
-    word-wrap: break-word;
+.t2m-box-output .t2m-box-textwrap {
+    overflow-x: auto;
+    white-space: nowrap;
 }
 .t2m-box-output .t2m-box-header {
     display: flex;
@@ -60,22 +62,19 @@
 @media (min-width: 800px) {
     .t2m-container {
         width: 700px;
-        margin-right: auto;
-        margin-left: auto;
     }
-    .h2n-box-textwrap {
-        min-height: 200px;
+
+    .t2m-box-output .t2m-box-textwrap {
+        width: 698x;
     }
 }
-
 
 @media (min-width: 1200px) {
     .t2m-container {
         width: 900px;
-        margin-right: auto;
-        margin-left: auto;
     }
-    .h2n-box-textwrap {
-        min-height: 200px;
+
+    .t2m-box-output .t2m-box-textwrap {
+        width: 898px;
     }
 }
