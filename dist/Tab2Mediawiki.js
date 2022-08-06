@@ -60,7 +60,7 @@ class Tab2Mediawiki {
             // result += it
             list[key] = it;
         }
-        result += list.join('\n');
+        result += list.join('');
         if (!options.isOnlyItems) {
             result += "|}";
         }

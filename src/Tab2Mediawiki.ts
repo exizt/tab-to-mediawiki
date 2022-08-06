@@ -66,7 +66,7 @@ class Tab2Mediawiki {
             list[key] = it
         }
 
-        result += list.join('\n')
+        result += list.join('')
 
         if (!options.isOnlyItems) {
             result += "|}";
