@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 /**
  * 이벤트 바인딩
  */
@@ -27,12 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
         let selector = optionSet.selector;
         let options = optionSet.options;
         // 문자열 입력 시 이벤트
-        _add_event(selector.input, 'input', convert);
+        _add_event(selector.input, 'input', call_convert);
         // 옵션 변경시
-        _add_change_event(selector.isReverse, (e) => { options.isReverse = e.target.checked; convert(); });
-        _add_change_event(selector.isIncludedHeader, (e) => { options.isIncludedHeader = e.target.checked; convert(); });
-        _add_change_event(selector.isOnlyItems, (e) => { options.isOnlyItems = e.target.checked; convert(); });
-        _add_change_event(selector.isSortable, (e) => { options.isSortable = e.target.checked; convert(); });
+        _add_change_event(selector.isReverse, (e) => { options.isReverse = e.target.checked; call_convert(); });
+        _add_change_event(selector.isIncludedHeader, (e) => { options.isIncludedHeader = e.target.checked; call_convert(); });
+        _add_change_event(selector.isOnlyItems, (e) => { options.isOnlyItems = e.target.checked; call_convert(); });
+        _add_change_event(selector.isSortable, (e) => { options.isSortable = e.target.checked; call_convert(); });
         _add_event(selector.copyBtn, 'click', (e) => {
             e.preventDefault();
             copyToClipboard(converter.output);
@@ -47,17 +56,23 @@ document.addEventListener("DOMContentLoaded", () => {
     function _add_change_event(sel, event) {
         _add_event(sel, 'change', event);
     }
+    function call_convert() {
+        convert();
+    }
     /**
     * 변환
     */
     function convert() {
-        const selector = optionSet.selector;
-        const inputString = document.querySelector(selector.input).value;
-        converter.convert(inputString, optionSet.options);
-        const output = document.querySelector(selector.output);
-        if (output != null) {
-            output.innerHTML = converter.output;
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            // console.log('convert')
+            const selector = optionSet.selector;
+            const input = document.querySelector(selector.input).value;
+            const output = converter.convert(input, optionSet.options);
+            const outputEl = document.querySelector(selector.output);
+            if (outputEl != null) {
+                outputEl.innerHTML = output;
+            }
+        });
     }
     /**
     * source : http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript

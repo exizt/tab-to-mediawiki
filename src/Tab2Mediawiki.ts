@@ -15,9 +15,8 @@ class Tab2Mediawiki {
     * 변환
     */
     convert(text: string, options: ITab2MediawikiOptions) {
-        this.output = ''
-        this.output = (options.isReverse) ? this.decodeText(text, options) : this.encodeText(text, options);
-
+        // this.output = ''
+        return (options.isReverse) ? this.decodeText(text, options) : this.encodeText(text, options);
     }
 
     /**

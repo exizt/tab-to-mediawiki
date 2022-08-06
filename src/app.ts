@@ -29,13 +29,13 @@
 		let options = optionSet.options;
 		
 		// 문자열 입력 시 이벤트
-		_add_event(selector.input, 'input', convert);
+		_add_event(selector.input, 'input', call_convert);
 
 		// 옵션 변경시
-		_add_change_event(selector.isReverse, (e:Event) => { options.isReverse = (e.target as HTMLInputElement).checked; convert(); })
-		_add_change_event(selector.isIncludedHeader, (e:Event)=>{ options.isIncludedHeader = (e.target as HTMLInputElement).checked; convert(); })
-		_add_change_event(selector.isOnlyItems, (e:Event)=>{ options.isOnlyItems = (e.target as HTMLInputElement).checked; convert(); })
-		_add_change_event(selector.isSortable, (e:Event)=>{ options.isSortable = (e.target as HTMLInputElement).checked; convert(); })
+		_add_change_event(selector.isReverse, (e:Event) => { options.isReverse = (e.target as HTMLInputElement).checked; call_convert(); })
+		_add_change_event(selector.isIncludedHeader, (e:Event)=>{ options.isIncludedHeader = (e.target as HTMLInputElement).checked; call_convert(); })
+		_add_change_event(selector.isOnlyItems, (e:Event)=>{ options.isOnlyItems = (e.target as HTMLInputElement).checked; call_convert(); })
+		_add_change_event(selector.isSortable, (e:Event)=>{ options.isSortable = (e.target as HTMLInputElement).checked; call_convert(); })
 
 		_add_event(selector.copyBtn, 'click', (e:any)=>{
 			e.preventDefault();
@@ -53,18 +53,23 @@
 		_add_event(sel, 'change', event)
 	}
 
+	function call_convert(){
+		convert()
+	}
+
 	/**
 	* 변환
 	*/
-	function convert(){
+	async function convert(){
+		// console.log('convert')
 		const selector = optionSet.selector
 
-        const inputString = (document.querySelector(selector.input) as HTMLTextAreaElement).value
-		converter.convert(inputString, optionSet.options);
+        const input = (document.querySelector(selector.input) as HTMLTextAreaElement).value
+		const output = converter.convert(input, optionSet.options);
 
-        const output = document.querySelector(selector.output)
-        if (output != null){
-            output.innerHTML = converter.output;
+        const outputEl = document.querySelector(selector.output)
+        if (outputEl != null){
+			outputEl.innerHTML = output;
         }
 	}
 	

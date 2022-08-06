@@ -13,8 +13,8 @@ class Tab2Mediawiki {
     * 변환
     */
     convert(text, options) {
-        this.output = '';
-        this.output = (options.isReverse) ? this.decodeText(text, options) : this.encodeText(text, options);
+        // this.output = ''
+        return (options.isReverse) ? this.decodeText(text, options) : this.encodeText(text, options);
     }
     /**
      * 탭을 미디어위키 테이블 형식으로 변환
