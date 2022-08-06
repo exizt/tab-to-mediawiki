@@ -34,8 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
         _add_change_event(selector.isOnlyItems, (e) => { options.isOnlyItems = e.target.checked; convert(); });
         _add_change_event(selector.isSortable, (e) => { options.isSortable = e.target.checked; convert(); });
         _add_event(selector.copyBtn, 'click', (e) => {
+            var _a;
             e.preventDefault();
-            copyToClipboard(converter.output);
+            const outputEl = document.querySelector(optionSet.selector.output);
+            if (outputEl != null) {
+                copyToClipboard((_a = outputEl.textContent) !== null && _a !== void 0 ? _a : '');
+            }
         });
     }
     // 이벤트 리스너 추가

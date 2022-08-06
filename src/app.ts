@@ -39,7 +39,11 @@
 
 		_add_event(selector.copyBtn, 'click', (e:any)=>{
 			e.preventDefault();
-			copyToClipboard(converter.output);
+
+			const outputEl = document.querySelector(optionSet.selector.output)
+			if (outputEl != null){
+				copyToClipboard(outputEl.textContent ?? '');
+			}
 		})
 	}
 	
