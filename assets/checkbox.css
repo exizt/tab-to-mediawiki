@@ -32,7 +32,8 @@
     width: 1.14em;
     background-color: #eee;
     border-radius: 0.18em;
-    margin-top: 0.13em
+    margin-top: 0.13em;
+    box-sizing: content-box;
 }
 
 /* On mouse-over, add a grey background color */
@@ -68,4 +69,5 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+    box-sizing: content-box;
 }
