@@ -29,13 +29,13 @@
 		let options = optionSet.options;
 		
 		// 문자열 입력 시 이벤트
-		_add_event(selector.input, 'input', call_convert);
+		_add_event(selector.input, 'input', convert);
 
 		// 옵션 변경시
-		_add_change_event(selector.isReverse, (e:Event) => { options.isReverse = (e.target as HTMLInputElement).checked; call_convert(); })
-		_add_change_event(selector.isIncludedHeader, (e:Event)=>{ options.isIncludedHeader = (e.target as HTMLInputElement).checked; call_convert(); })
-		_add_change_event(selector.isOnlyItems, (e:Event)=>{ options.isOnlyItems = (e.target as HTMLInputElement).checked; call_convert(); })
-		_add_change_event(selector.isSortable, (e:Event)=>{ options.isSortable = (e.target as HTMLInputElement).checked; call_convert(); })
+		_add_change_event(selector.isReverse, (e:Event) => { options.isReverse = (e.target as HTMLInputElement).checked; convert(); })
+		_add_change_event(selector.isIncludedHeader, (e:Event)=>{ options.isIncludedHeader = (e.target as HTMLInputElement).checked; convert(); })
+		_add_change_event(selector.isOnlyItems, (e:Event)=>{ options.isOnlyItems = (e.target as HTMLInputElement).checked; convert(); })
+		_add_change_event(selector.isSortable, (e:Event)=>{ options.isSortable = (e.target as HTMLInputElement).checked; convert(); })
 
 		_add_event(selector.copyBtn, 'click', (e:any)=>{
 			e.preventDefault();
@@ -53,14 +53,10 @@
 		_add_event(sel, 'change', event)
 	}
 
-	function call_convert(){
-		convert()
-	}
-
 	/**
 	* 변환
 	*/
-	async function convert(){
+	function convert(){
 		// console.log('convert')
 		const selector = optionSet.selector
 
@@ -69,7 +65,8 @@
 
         const outputEl = document.querySelector(selector.output)
         if (outputEl != null){
-			outputEl.innerHTML = output;
+			// outputEl.innerHTML = output;
+			outputEl.textContent = output;
         }
 	}
 	
