@@ -1,30 +1,13 @@
-"use strict";
-/**
- * Tab2Mediawiki 1.1.12
- */
-class Tab2Mediawiki {
-    /**
-     * constructor
-     */
-    constructor() {
+var Tab2Mediawiki = (function () {
+    function Tab2Mediawiki() {
         this.output = '';
     }
-    /**
-    * 변환
-    */
-    convert(text, options) {
-        // this.output = ''
+    Tab2Mediawiki.prototype.convert = function (text, options) {
         return (options.isReverse) ? this.decodeText(text, options) : this.encodeText(text, options);
-    }
-    /**
-     * 탭을 미디어위키 테이블 형식으로 변환
-     * @param text
-     * @param options
-     * @returns
-     */
-    encodeText(text, options) {
-        let result = "";
-        const list = text.split(/\n/); //줄 단위로 분리
+    };
+    Tab2Mediawiki.prototype.encodeText = function (text, options) {
+        var result = "";
+        var list = text.split(/\n/);
         if (!options.isOnlyItems) {
             if (options.isSortable) {
                 result += "{| class=\"wikitable sortable\"\n";
@@ -33,10 +16,9 @@ class Tab2Mediawiki {
                 result += "{| class=\"wikitable\"\n";
             }
         }
-        for (let key in list) {
-            // let i = Number(key)
-            const i = +key; // string to integer
-            let item = list[key];
+        for (var key in list) {
+            var i = +key;
+            var item = list[key];
             if (item.replace(/(^\s*)|(\s*$)/gi, "") == "") {
                 continue;
             }
@@ -46,9 +28,7 @@ class Tab2Mediawiki {
             else {
                 item = item.replace(/\t/g, " || ");
             }
-            // append result
-            let it = "|-\n";
-            // result += "|-\n";
+            var it = "|-\n";
             if (options.isIncludedHeader && i == 0) {
                 it += "! ";
             }
@@ -57,7 +37,6 @@ class Tab2Mediawiki {
             }
             it += item;
             it += "\n";
-            // result += it
             list[key] = it;
         }
         result += list.join('');
@@ -65,45 +44,34 @@ class Tab2Mediawiki {
             result += "|}";
         }
         return result;
-    }
-    /**
-     * 미디어위키 테이블 형식을 탭 형식으로 전환
-     * @param text
-     * @param options
-     * @returns
-     */
-    decodeText(text, options) {
-        let result = "";
-        text = text.replace(/(\n\|\})/, ""); //제일 끝부분
-        const list = text.split(/(\n\|-\n)/); //줄 단위로 분리
-        //console.log(list);
-        for (let key in list) {
-            // let i = Number(key)
-            const i = +key; // string to integer
-            let item = list[key];
+    };
+    Tab2Mediawiki.prototype.decodeText = function (text, options) {
+        var result = "";
+        text = text.replace(/(\n\|\})/, "");
+        var list = text.split(/(\n\|-\n)/);
+        for (var key in list) {
+            var i = +key;
+            var item = list[key];
             if (item.replace(/(\n\|-\n)/gi, "") == "") {
                 continue;
             }
-            //상단 구문 제거
             if (i <= 1) {
-                const firstcheck = /(^\{\|)/i;
+                var firstcheck = /(^\{\|)/i;
                 if (firstcheck.test(item)) {
                     continue;
                 }
             }
-            // 앞부분 처리
             item = item.replace(/(^!)/, "");
             item = item.replace(/(^\|)/, "");
-            // 공백 처리
-            item = item.replace(/(^\s)|(\s*$)/gi, ""); // trim 처리 => 빈칸없앰
-            item = item.replace(/(\s*\|\|\s*)/g, "\|\|"); //세부별 trim 처리 => 빈칸없앰
-            item = item.replace(/(\s*!!\s*)/g, "!!"); //세부별 trim 처리 => 빈칸없앰
-            // 탭으로 변경
-            item = item.replace(/(\|\|)/gi, "\t"); //|| => 탭
-            item = item.replace(/(!!)/gi, "\t"); // !! => 탭
+            item = item.replace(/(^\s)|(\s*$)/gi, "");
+            item = item.replace(/(\s*\|\|\s*)/g, "\|\|");
+            item = item.replace(/(\s*!!\s*)/g, "!!");
+            item = item.replace(/(\|\|)/gi, "\t");
+            item = item.replace(/(!!)/gi, "\t");
             result += item;
             result += "\n";
         }
         return result;
-    }
-}
+    };
+    return Tab2Mediawiki;
+}());
