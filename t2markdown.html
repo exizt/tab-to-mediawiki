@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, width=device-width" />
+<meta charset="utf-8"> 
+<title>Tab to Markdown Table</title>
+<link href="./assets/reset.css" rel="stylesheet">
+<link href="./assets/app.css" rel="stylesheet">
+<link href="./assets/checkbox.css" rel="stylesheet">
+<link href="./assets/button.css" rel="stylesheet">
+<script src="./dist/Tab2Markdown.js"></script>
+<script src="./dist/app.t2md.js"></script>
+</head>
+<body>
+    <div class="t2m-container">
+        <div class="t2m-box t2m-box-input">
+            <div>
+                <h1 class="t2m-box-header">입력</h1>
+                <div class="t2m-box-textwrap">
+                    <textarea id="input" rows="14" placeholder="" autofocus></textarea>
+                </div>
+            </div>
+            <div class="t2m-box-input-options">
+                <label class="check-wrap" for="opt_included_header">헤더 포함
+                    <input type="checkbox" id="opt_included_header" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+        <div class="t2m-box t2m-box-output">
+            <div class="t2m-box-header">
+                <h1>결과</h1>
+                <button id="btn_copyresult" class="primary">결과 복사</button>
+            </div>
+            <div class="t2m-box-textwrap">
+                <pre id="output"></pre>
+            </div>
+        </div>
+        <div class="t2m-help">
+            <dl>
+                <dt>설명</dt>
+                <dd>- 엑셀 등에서 복사하여 tab으로 나뉜 부분을 미디어위키 테이블 형식으로 변환합니다.</dd>
+                <dd>- 동작에 이상이 있을 시, 크롬 기준 <kbd>ctrl + shift + R</kbd>을 눌러서 브라우저 캐시를 갱신해주세요.</dd>
+            </dl>
+        </div>
+    </div>
+    <div style="text-align:right; padding: 0 1rem">
+        <p>© 2016-2022 <a href="https://github.com/exizt" target="_blank">exizt</a></p>
+    </div>
+</body>
+</html>

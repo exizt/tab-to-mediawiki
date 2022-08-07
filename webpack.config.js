@@ -4,6 +4,7 @@ module.exports = {
   entry: {
     'app.t2mw':'./src/app.t2mw.ts',
     'app.t2dw':'./src/app.t2dw.ts',
+    'app.t2md':'./src/app.t2md.ts',
   },
   output: {
     filename: '[name].js',
