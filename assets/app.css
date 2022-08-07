@@ -6,6 +6,7 @@
     margin-left: auto;
     margin-top: 20px;
     margin-bottom: 20px;
+    padding: 0 10px;
 }
 .t2m-container, textarea {
     font-size: 20px;
@@ -41,16 +42,21 @@
     font-size: 0.875em;
     text-align:right;
 }
-.t2m-box-output .t2m-box-textwrap {
-    overflow-x: auto;
-    white-space: nowrap;
-}
 .t2m-box-output .t2m-box-header {
     display: flex;
     justify-content: space-between;
 }
 .t2m-box-output .t2m-box-header button{
     font-size: 14px;
+}
+.t2m-box-output .t2m-box-textwrap {
+    /*overflow-x: auto;
+    white-space: nowrap;*/
+}
+.t2m-box-output pre {
+    width: 100%;
+    word-break: break-all;
+    white-space: pre-wrap;
 }
 .t2m-help {
     font-size:0.7em; 
@@ -63,18 +69,10 @@
     .t2m-container {
         width: 700px;
     }
-
-    .t2m-box-output .t2m-box-textwrap {
-        width: 698x;
-    }
 }
 
 @media (min-width: 1200px) {
     .t2m-container {
         width: 900px;
-    }
-
-    .t2m-box-output .t2m-box-textwrap {
-        width: 898px;
     }
 }
