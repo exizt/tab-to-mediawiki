@@ -9,10 +9,9 @@ export function bind(converter:IConveter, optionSet:IOptionSet){
 	_add_event(selector.input, 'input', call_convert);
 
 	// 옵션 변경에 따른 이벤트 바인딩
-	(Object.keys(options) as (keyof typeof options)[]).forEach((key, index) => {
-		// console.log(key, options[key], index);
+	for(let key in options){
 		_add_change_event(selector[key], (e:Event) => { options[key] = (e.target as HTMLInputElement).checked; call_convert(); })
-	});
+	}
 	//_add_change_event(selector.isIncludedHeader , (e:Event) => { options.isIncludedHeader = (e.target as HTMLInputElement).checked; convert(); })
 
 	_add_event(selector.copyBtn, 'click', (e:Event)=>{
