@@ -1,4 +1,5 @@
 import { bind } from "./app.include";
+import { Tab2Dokuwiki } from "../Tab2Dokuwiki";
 
 /**
  * 이벤트 바인딩

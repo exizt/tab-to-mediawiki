@@ -1,4 +1,5 @@
 import { bind } from "./app.include";
+import { Tab2Mediawiki } from "../Tab2Mediawiki";
 
 /**
  * 이벤트 바인딩

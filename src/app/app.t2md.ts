@@ -1,4 +1,5 @@
 import { bind } from "./app.include";
+import { Tab2Markdown } from "../Tab2Markdown";
 
 /**
  * 이벤트 바인딩

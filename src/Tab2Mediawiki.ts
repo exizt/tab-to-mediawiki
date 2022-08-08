@@ -1,7 +1,7 @@
 /**
  * Tab2Mediawiki 1.1.12
  */
-class Tab2Mediawiki {
+export class Tab2Mediawiki {
     output: string = '';
 
     /**

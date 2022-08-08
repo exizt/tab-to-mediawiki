@@ -1,7 +1,7 @@
 /**
  * Tab2Mediawiki 1.1.12
  */
-class Tab2Dokuwiki {
+export class Tab2Dokuwiki {
     /**
      * constructor
      */
