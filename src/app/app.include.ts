@@ -2,8 +2,8 @@ import { copyToClipboard } from "./c2clipboard";
 
 // 이벤트 바인딩
 export function bind(converter:IConveter, optionSet:IOptionSet){
-	let selector = optionSet.selector
-	let options = optionSet.options
+	const selector = optionSet.selector
+	const options = optionSet.options
 	
 	// 문자열 입력 시 이벤트
 	_add_event(selector.input, 'input', call_convert);
@@ -18,8 +18,8 @@ export function bind(converter:IConveter, optionSet:IOptionSet){
 	_add_event(selector.copyBtn, 'click', (e:Event)=>{
 		e.preventDefault();
 
-		const outputEl = document.querySelector(optionSet.selector.output)
-		if (outputEl != null && typeof copyToClipboard === 'function'){
+		const outputEl = document.querySelector(selector.output)
+		if (outputEl != null){
 			copyToClipboard(outputEl.textContent ?? '');
 		}
 	})
