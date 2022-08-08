@@ -1,3 +1,4 @@
+"use strict";
 var Tab2Dokuwiki = (function () {
     function Tab2Dokuwiki() {
     }

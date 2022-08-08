@@ -1,3 +1,4 @@
+"use strict";
 var Tab2Mediawiki = (function () {
     function Tab2Mediawiki() {
         this.output = '';

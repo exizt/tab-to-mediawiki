@@ -1,3 +1,4 @@
+"use strict";
 var Tab2Markdown = (function () {
     function Tab2Markdown() {
     }
