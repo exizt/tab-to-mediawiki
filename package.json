@@ -1,8 +1,7 @@
 {
   "name": "tab-to-mediawiki",
-  "version": "1.3.13",
-  "description": "탭 스타일의 문자열을 미디어위키 테이블 포멧으로 변환해주는 간단한 소스",
-  "main": "Tab2Mediawiki.js",
+  "version": "1.3.14",
+  "description": "탭 형식을 Mediawiki 테이블 형식으로 변환하는 웹 도구입니다.",
   "scripts": {
     "build": "npm run build-app",
     "build-ts-dev": "tsc",
@@ -13,12 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/exizt/tab-to-mediawiki.git"
   },
-  "author": "e2xist",
+  "author": "exizt",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/exizt/tab-to-mediawiki/issues"
-  },
-  "homepage": "https://github.com/exizt/tab-to-mediawiki#readme",
+  "homepage": "https://github.com/exizt/tab-to-mediawiki",
   "devDependencies": {
     "ts-loader": "^9.3.1",
     "typescript": "^4.3.4",
