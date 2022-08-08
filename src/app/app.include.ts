@@ -1,7 +1,7 @@
 import { copyToClipboard } from "./c2clipboard";
 
 // 이벤트 바인딩
-export function bind(converter:IConveter, optionSet:any){
+export function bind(converter:IConveter, optionSet:IOptionSet){
 	let selector = optionSet.selector
 	let options = optionSet.options
 	
@@ -42,7 +42,7 @@ function _add_change_event(sel:string, event:EventListener){
 /**
 * 변환
 */
-function convert(converter:IConveter, optionSet:any){
+function convert(converter:IConveter, optionSet:IOptionSet){
 	// console.log('convert')
 	const selector = optionSet.selector
 
@@ -58,4 +58,9 @@ function convert(converter:IConveter, optionSet:any){
 
 interface IConveter {
     convert: Function
+}
+
+interface IOptionSet {
+	options:any;
+	selector:any;
 }

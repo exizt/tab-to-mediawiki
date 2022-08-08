@@ -2,8 +2,6 @@
  * Tab2Mediawiki 1.1.12
  */
 export class Tab2Mediawiki {
-    output: string = '';
-
     /**
      * constructor
      */
@@ -15,7 +13,6 @@ export class Tab2Mediawiki {
     * 변환
     */
     convert(text: string, options: ITab2MediawikiOptions) {
-        // this.output = ''
         return (options.isReverse) ? this.decodeText(text, options) : this.encodeText(text, options);
     }
 
