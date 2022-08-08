@@ -15,7 +15,7 @@ export function bind(converter:IConveter, optionSet:IOptionSet){
 	});
 	//_add_change_event(selector.isIncludedHeader , (e:Event) => { options.isIncludedHeader = (e.target as HTMLInputElement).checked; convert(); })
 
-	_add_event(selector.copyBtn, 'click', (e:any)=>{
+	_add_event(selector.copyBtn, 'click', (e:Event)=>{
 		e.preventDefault();
 
 		const outputEl = document.querySelector(optionSet.selector.output)
