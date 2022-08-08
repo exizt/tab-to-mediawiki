@@ -5,7 +5,7 @@
   "main": "Tab2Mediawiki.js",
   "scripts": {
     "build": "npm run build-app & npm run build-ts",
-    "build-ts": "tsc ./src/Tab2Mediawiki.ts ./src/Tab2Dokuwiki.ts ./src/Tab2Markdown.ts --outDir ./dist --removeComments",
+    "build-ts": "tsc",
     "build-app": "npx webpack --mode production",
     "build-app-dev": "npx webpack --mode development"
   },

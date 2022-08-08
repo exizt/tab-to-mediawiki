@@ -2,9 +2,9 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    'app.t2mw':'./src/app.t2mw.ts',
-    'app.t2dw':'./src/app.t2dw.ts',
-    'app.t2md':'./src/app.t2md.ts',
+    'app.t2mw':'./src/app/app.t2mw.ts',
+    'app.t2dw':'./src/app/app.t2dw.ts',
+    'app.t2md':'./src/app/app.t2md.ts',
   },
   output: {
     filename: '[name].js',
