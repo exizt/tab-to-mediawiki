@@ -8,10 +8,6 @@
     "build-app": "npx webpack --mode production",
     "build-app-dev": "npx webpack --mode development"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/exizt/tab-to-mediawiki.git"
-  },
   "author": "exizt",
   "license": "MIT",
   "homepage": "https://github.com/exizt/tab-to-mediawiki",
