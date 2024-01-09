@@ -19,11 +19,6 @@ https://exizt.github.io/tab-to-mediawiki/
 
 <br><br><br>
 
-# 라이선스 
-`MIT License` 입니다. 편하게 이용해주세요.
-
-<br><br><br>
-
 # 변환 동작에 대한 설명
 
 각 해당하는 값을 미디어위키에 맞게 변환합니다. 
